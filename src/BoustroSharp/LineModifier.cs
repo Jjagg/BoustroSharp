@@ -26,5 +26,17 @@ namespace BoustroSharp
         {
             return HashCode.Combine(Type, Value);
         }
+
+        public static bool operator ==(LineModifier left, LineModifier right)
+        {
+            if (left is null)
+            {
+                if (right is null) return true;
+                return false;
+            }
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(LineModifier left, LineModifier right) => !(left == right);
     }
 }

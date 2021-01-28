@@ -22,15 +22,23 @@ namespace BoustroSharp
         public override bool Equals(object? obj)
         {
             return obj is AttributeSpan span &&
-                   Type == span.Type &&
-                   EqualityComparer<JsonElement?>.Default.Equals(Value, span.Value) &&
-                   Start == span.Start &&
-                   End == span.End;
+                   this == span;
         }
 
         public override int GetHashCode()
         {
             return HashCode.Combine(Type, Value, Start, End);
         }
+
+        public static bool operator ==(AttributeSpan left, AttributeSpan right)
+        {
+            return left.Type == right.Type &&
+                EqualityComparer<JsonElement?>.Default.Equals(left.Value, right.Value) &&
+                left.Start == right.Start &&
+                left.End == right.End;
+        }
+
+        public static bool operator !=(AttributeSpan left, AttributeSpan right) => !(left == right);
+
     }
 }

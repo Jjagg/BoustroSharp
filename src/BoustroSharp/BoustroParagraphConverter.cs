@@ -54,7 +54,17 @@ namespace BoustroSharp
 
         public override void Write(Utf8JsonWriter writer, BoustroParagraph value, JsonSerializerOptions options)
         {
-            throw new NotSupportedException("Subclasses should be directly serialized.");
+            switch (value)
+            {
+                case LineParagraph line:
+                    JsonSerializer.Serialize(writer, line, options);
+                    break;
+                case ParagraphEmbed embed:
+                    JsonSerializer.Serialize(writer, embed, options);
+                    break;
+                default:
+                    throw new JsonException($"Missing serializer for type '{value.GetType()}'.");
+            }
         }
     }
 }

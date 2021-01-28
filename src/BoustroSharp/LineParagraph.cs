@@ -7,13 +7,13 @@ namespace BoustroSharp
 {
     public class LineParagraph : BoustroParagraph
     {
-        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
         public string Type => "text";
         public string Text { get; set; }
         public List<AttributeSpan>? Spans { get; set; }
         public List<LineModifier>? Modifiers { get; set; }
 
-        public LineParagraph(string text, List<AttributeSpan> spans, List<LineModifier> modifiers)
+        public LineParagraph(string text, List<AttributeSpan>? spans = null, List<LineModifier>? modifiers = null)
         {
             Text = text;
             Spans = spans is not null && spans.Any() ? spans : null;
@@ -33,5 +33,17 @@ namespace BoustroSharp
         {
             return HashCode.Combine(Type, Text, Spans, Modifiers);
         }
+
+        public static bool operator ==(LineParagraph left, LineParagraph right)
+        {
+            if (left is null)
+            {
+                if (right is null) return true;
+                return false;
+            }
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(LineParagraph left, LineParagraph right) => !(left == right);
     }
 }
